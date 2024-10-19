@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "serverlistsync",
+	"version": "${version}",
+	"name": "ServerListSync",
+	"description": "A mod for synchronizing a list of remote servers",
+	"authors": [
+		"alazeprt"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "LGPL-3.0",
+	"icon": "assets/serverlistsync/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"top.alazeprt.sls.ServerListSync"
+		]
+	},
+	"mixins": [
+		{
+			"config": "serverlistsync.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.12",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
