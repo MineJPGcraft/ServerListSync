@@ -18,11 +18,7 @@ import static top.alazeprt.sls.ServerListSyncClient.*;
 @Mixin(ServerList.class)
 public abstract class ServerListMixin {
 
-	@Shadow public abstract ServerInfo get(String address);
-
 	@Shadow @Final private List<ServerInfo> servers;
-
-	@Shadow @Final private List<ServerInfo> hiddenServers;
 
 	@Inject(at = @At("RETURN"), method = "loadFile")
     private void onLoadServerInfo(CallbackInfo ci) {
@@ -40,17 +36,22 @@ public abstract class ServerListMixin {
 	}
 
 	@Unique
+	private ServerInfo get(String address) {
+		for (ServerInfo serverInfo : servers) {
+			if (Objects.equals(serverInfo.address, address)) return serverInfo;
+		}
+		return null;
+	}
+
+	@Unique
 	private void updateServerInfo() {
 		if (!updateData) {
 			updateServerInfos();
 		}
-
 		for (ServerInfo serverInfo : serverInfos) {
 			if (!Objects.equals(get(serverInfo.address), serverInfo)) {
 				ServerInfo serverInfo1 = get(serverInfo.address);
-				if (!servers.remove(serverInfo1)) {
-					hiddenServers.remove(serverInfo1);
-				}
+				servers.remove(serverInfo1);
 				servers.add(serverInfo);
 			}
 		}
