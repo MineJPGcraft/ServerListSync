@@ -22,7 +22,7 @@ public class ServerListSyncClient implements ClientModInitializer {
         updateData = true;
         for (JsonElement element : ServerListSync.serverInfosJson) {
             serverInfos.add(new ServerInfo(element.getAsJsonObject().get("name").getAsString(),
-                    element.getAsJsonObject().get("address").getAsString(), ServerInfo.ServerType.OTHER));
+                    element.getAsJsonObject().get("address").getAsString(), false));
         }
     }
 }
