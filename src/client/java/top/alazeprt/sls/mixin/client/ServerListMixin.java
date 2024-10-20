@@ -10,9 +10,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.alazeprt.sls.ServerListSyncClient;
 
 import java.util.List;
 import java.util.Objects;
+
+import static top.alazeprt.sls.ServerListSyncClient.*;
 
 @Mixin(ServerList.class)
 public abstract class ServerListMixin {
@@ -40,7 +43,11 @@ public abstract class ServerListMixin {
 
 	@Unique
 	private void updateServerInfo() {
-		for (ServerInfo serverInfo : servers) {
+		if (!updateData) {
+			updateServerInfos();
+		}
+
+		for (ServerInfo serverInfo : serverInfos) {
 			if (!Objects.equals(get(serverInfo.address), serverInfo)) {
 				ServerInfo serverInfo1 = get(serverInfo.address);
 				if (!servers.remove(serverInfo1)) {
