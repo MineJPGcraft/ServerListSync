@@ -11,13 +11,13 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class HttpUtil {
+import static top.alazeprt.sls.config.SLSConfig.address;
 
-    private static final String url = "http://localhost:8080/";
+public class HttpUtil {
 
     public static JsonObject get() {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet httpGet = new HttpGet(address);
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             if (response.getStatusLine().getStatusCode() != 200) {

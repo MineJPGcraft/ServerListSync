@@ -4,14 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.ModInitializer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.alazeprt.sls.config.SLSConfig;
 import top.alazeprt.sls.util.HttpUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ServerListSync implements ModInitializer {
 	public static final String MOD_ID = "serverlistsync";
@@ -28,6 +28,12 @@ public class ServerListSync implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		LOGGER.info("Loading configuration ...");
+		try {
+			SLSConfig.load();
+		} catch (IOException e) {
+			LOGGER.error("Error occurred while loading configuration: {}", e.toString());
+		}
 		LOGGER.info("Downloading server information ...");
 		JsonObject result = HttpUtil.get();
 		LOGGER.info(new Gson().toJson(result));
