@@ -86,3 +86,11 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+remapJar {
+	archiveFileName.set("serverlistsync-fabric-${minecraft_version}-${version}.jar")
+}
+
+remapSourcesJar {
+	archiveFileName.set("serverlistsync-fabric-${minecraft_version}-${version}-sources.jar")
+}
