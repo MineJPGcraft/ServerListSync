@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static top.alazeprt.sls.ServerListSyncClient.*;
 
@@ -48,7 +49,7 @@ public abstract class ServerListMixin {
 	}
 
 	@Unique
-	private void updateServerInfo() {
+	private synchronized void updateServerInfo() {
 		if (!updateData) {
 			updateServerInfos();
 		}

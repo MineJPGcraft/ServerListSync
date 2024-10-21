@@ -18,6 +18,7 @@ public class SLSConfig {
 
     public static String address = "http://localhost:8080/";
     public static ServerOrder order = ServerOrder.DEFAULT;
+    public static int updatePeriod = 60;
 
     public static void load() throws IOException {
         try {
@@ -25,7 +26,7 @@ public class SLSConfig {
                     JsonObject.class);
             address = content.get("address").getAsString();
             order = ServerOrder.parse(content.get("order").getAsString());
-            LoggerFactory.getLogger(SLSConfig.class).info(order.toString());
+            updatePeriod = content.get("updatePeriod").getAsInt();
         } catch (Exception e) {
             initialize();
         }
@@ -33,6 +34,6 @@ public class SLSConfig {
 
     private static void initialize() throws IOException {
         Files.createDirectories(configFile.getParentFile().toPath());
-        Files.writeString(configFile.toPath(), "{\"address\":\"http://localhost:8080/\",\"order\":\"default\"}", StandardCharsets.UTF_8);
+        Files.writeString(configFile.toPath(), "{\"address\":\"http://localhost:8080/\",\"order\":\"default\",\"updatePeriod\":60}", StandardCharsets.UTF_8);
     }
 }
