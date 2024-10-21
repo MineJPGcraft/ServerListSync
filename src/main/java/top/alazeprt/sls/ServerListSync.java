@@ -29,12 +29,12 @@ public class ServerListSync implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		LOGGER.info("Loading configuration ...");
-		try {
-			SLSConfig.load();
-		} catch (IOException e) {
-			LOGGER.error("Error occurred while loading configuration: {}", e.toString());
-		}
-		LOGGER.info("Downloading server information ...");
+        try {
+            SLSConfig.load();
+        } catch (IOException e) {
+            LOGGER.error("Error occurred while loading configuration: {}", e.toString());
+        }
+        LOGGER.info("Downloading server information ...");
 		JsonObject result = HttpUtil.get();
 		LOGGER.info(new Gson().toJson(result));
 		if (result.get("error") == null) {
