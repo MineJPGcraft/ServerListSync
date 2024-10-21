@@ -2,6 +2,7 @@ package top.alazeprt.sls.mixin.client;
 
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.ServerList;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -9,20 +10,28 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.alazeprt.sls.ServerListSync;
+import top.alazeprt.sls.config.SLSConfig;
+import top.alazeprt.sls.util.ServerOrder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static top.alazeprt.sls.ServerListSyncClient.*;
 
 @Mixin(ServerList.class)
 public abstract class ServerListMixin {
 
-	@Shadow public abstract ServerInfo get(String address);
+	@Shadow public abstract ServerInfo get(int index);
 
 	@Shadow @Final private List<ServerInfo> servers;
 
 	@Shadow @Final private List<ServerInfo> hiddenServers;
+
+	@Shadow @Final private static Logger LOGGER;
 
 	@Inject(at = @At("RETURN"), method = "loadFile")
     private void onLoadServerInfo(CallbackInfo ci) {
@@ -40,19 +49,16 @@ public abstract class ServerListMixin {
 	}
 
 	@Unique
-	private void updateServerInfo() {
+	private synchronized void updateServerInfo() {
 		if (!updateData) {
 			updateServerInfos();
 		}
-
+		if (SLSConfig.order.equals(ServerOrder.RANDOM)) {
+			Collections.shuffle(serverInfos);
+		}
+		serverInfos.forEach(serverInfo -> servers.removeIf(origin -> Objects.equals(origin.address, serverInfo.address)));
 		for (ServerInfo serverInfo : serverInfos) {
-			if (!Objects.equals(get(serverInfo.address), serverInfo)) {
-				ServerInfo serverInfo1 = get(serverInfo.address);
-				if (!servers.remove(serverInfo1)) {
-					hiddenServers.remove(serverInfo1);
-				}
-				servers.add(serverInfo);
-			}
+			servers.add(new ServerInfo(serverInfo.name, serverInfo.address, serverInfo.isLocal()));
 		}
 	}
 }
