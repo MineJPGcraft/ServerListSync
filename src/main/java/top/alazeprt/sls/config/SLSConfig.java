@@ -16,8 +16,8 @@ public class SLSConfig {
     private static final File configFile = new File("config", "serverlistsync.json");
     private static final Gson gson = new Gson();
 
-    public static String address = "http://localhost:8080/";
-    public static ServerOrder order = ServerOrder.DEFAULT;
+    public static String address = "https://ghp.ci/https://raw.githubusercontent.com/MineJPGcraft/ServerListSync/refs/heads/master/serverlistsync.json";
+    public static ServerOrder order = RANDOM;
     public static int updatePeriod = 60;
 
     public static void load() throws IOException {
@@ -34,6 +34,6 @@ public class SLSConfig {
 
     private static void initialize() throws IOException {
         Files.createDirectories(configFile.getParentFile().toPath());
-        Files.writeString(configFile.toPath(), "{\"address\":\"http://localhost:8080/\",\"order\":\"default\",\"updatePeriod\":60}", StandardCharsets.UTF_8);
+        Files.writeString(configFile.toPath(), "{\"address\":\"https://ghp.ci/https://raw.githubusercontent.com/MineJPGcraft/ServerListSync/refs/heads/master/serverlistsync.json\",\"order\":\"random\",\"updatePeriod\":60}", StandardCharsets.UTF_8);
     }
 }
