@@ -17,7 +17,7 @@ public class SLSConfig {
     private static final Gson gson = new Gson();
 
     public static String address = "https://ghp.ci/https://raw.githubusercontent.com/MineJPGcraft/ServerListSync/refs/heads/master/serverlistsync.json";
-    public static ServerOrder order = RANDOM;
+    public static ServerOrder order = ServerOrder.RANDOM;
     public static int updatePeriod = 60;
 
     public static void load() throws IOException {
