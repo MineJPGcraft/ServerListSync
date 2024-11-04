@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class SLSConfig {
     private static final File configFile = new File("config", "serverlistsync.json");
@@ -30,6 +33,15 @@ public class SLSConfig {
         } catch (Exception e) {
             initialize();
         }
+    }
+
+    public static void save() throws IOException {
+        Files.createDirectories(configFile.getParentFile().toPath());
+        Map<String, Object> map = new HashMap<>();
+        map.put("address", address);
+        map.put("order", order.name().toLowerCase());
+        map.put("updatePeriod", updatePeriod);
+        Files.writeString(configFile.toPath(), gson.toJson(map), StandardCharsets.UTF_8);
     }
 
     private static void initialize() throws IOException {

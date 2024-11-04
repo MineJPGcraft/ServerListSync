@@ -1,0 +1,36 @@
+{
+    "servers": [
+        {
+            "name": "Craft233",
+            "address": "mc.craft233.top"
+        },
+        {
+            "name": "BugCraft",
+            "address": "play.bugcraft.org"
+        },
+        {
+            "name": "Minecraft MCIC",
+            "address": "mcs.mcic.us.kg"
+        },
+        {
+            "name": "风河 | WindyRiver",
+            "address": "mc.windyriver.top"
+        },
+        {
+            "name": "Ocean Network 服务器",
+            "address": "mc26.rhymc.com:20049"
+        },
+        {
+            "name": "EternalStar",
+            "address": "etstmc.cn"
+        },
+        {
+            "name": "HappyDog",
+            "address": "happydog.us.kg"
+        },
+        {
+            "name": "MC生电服",
+            "address": "mc.zhuyuxuan.link"
+        }
+    ]
+}

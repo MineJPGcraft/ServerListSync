@@ -3,7 +3,8 @@
 	"package": "top.alazeprt.sls.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-      "ServerListMixin"
+		"CheckboxWidgetMixin",
+		"ServerListMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
