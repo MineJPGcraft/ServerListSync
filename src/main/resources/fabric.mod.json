@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"top.alazeprt.sls.ServerListSync"
+		],
+		"modmenu": [
+			"top.alazeprt.sls.screen.SLSModMenuImpl"
 		]
 	},
 	"mixins": [
