@@ -63,7 +63,7 @@ public class ServerListSyncClient implements ClientModInitializer {
     public static synchronized void updateServerInfos() {
         for (JsonElement element : ServerListSync.serverInfosJson) {
             serverInfos.add(new ServerInfo(element.getAsJsonObject().get("name").getAsString(),
-                    element.getAsJsonObject().get("ip").getAsString(), ServerInfo.ServerType.OTHER));
+                    element.getAsJsonObject().get("ip").getAsString(), false));
         }
         if (SLSConfig.order.equals(ServerOrder.REVERSE)) Collections.reverse(serverInfos);
         if (SLSConfig.order.equals(ServerOrder.ALPHABETICAL)) {
