@@ -38,7 +38,11 @@ public class ServerListSyncClient implements ClientModInitializer {
                 try {
                     ServerListSync.serverInfosJson.clear();
                     for (JsonElement element : result.getAsJsonArray("servers")) {
-                        ServerListSync.serverInfosJson.add(element);
+                        if (element.getAsJsonObject().has("ip") && element.getAsJsonObject().has("name")) {
+                            ServerListSync.serverInfosJson.add(element);
+                            continue;
+                        }
+                        threadLogger.error("Error occurred while parsing server information: {} ; ip or name is empty", new Gson().toJson(element));
                     }
                     synchronized (serverInfos) { serverInfos.clear(); }
                     updateServerInfos();
@@ -59,7 +63,7 @@ public class ServerListSyncClient implements ClientModInitializer {
     public static synchronized void updateServerInfos() {
         for (JsonElement element : ServerListSync.serverInfosJson) {
             serverInfos.add(new ServerInfo(element.getAsJsonObject().get("name").getAsString(),
-                    element.getAsJsonObject().get("address").getAsString(), false));
+                    element.getAsJsonObject().get("ip").getAsString(), false));
         }
         if (SLSConfig.order.equals(ServerOrder.REVERSE)) Collections.reverse(serverInfos);
         if (SLSConfig.order.equals(ServerOrder.ALPHABETICAL)) {
