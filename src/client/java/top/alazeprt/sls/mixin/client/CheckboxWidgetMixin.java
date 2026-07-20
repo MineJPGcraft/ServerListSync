@@ -1,15 +1,11 @@
 package top.alazeprt.sls.mixin.client;
 
-import net.minecraft.client.gui.widget.CheckboxWidget;
+import net.minecraft.client.gui.components.Checkbox;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(CheckboxWidget.class)
+@Mixin(Checkbox.class)
 public interface CheckboxWidgetMixin {
-    @Accessor("checked")
+    @Accessor("selected")
     public void setChecked(boolean checked);
 }

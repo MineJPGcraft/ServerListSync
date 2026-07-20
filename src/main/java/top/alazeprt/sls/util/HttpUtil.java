@@ -2,33 +2,34 @@ package top.alazeprt.sls.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import static top.alazeprt.sls.config.SLSConfig.address;
 
 public class HttpUtil {
 
     public static JsonObject get() {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(address);
-            HttpResponse response = httpClient.execute(httpGet);
-            HttpEntity entity = response.getEntity();
-            if (response.getStatusLine().getStatusCode() != 200) {
-                return new Gson().fromJson("{\"error\":{\"code\":\"" + response.getStatusLine().getStatusCode() + "\"}}", JsonObject.class);
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(address))
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                return new Gson().fromJson("{\"error\":{\"code\":\"" + response.statusCode() + "\"}}", JsonObject.class);
             }
-            if (entity != null) {
-                return new Gson().fromJson(EntityUtils.toString(entity), JsonObject.class);
-            }
+            return new Gson().fromJson(response.body(), JsonObject.class);
         } catch (IOException e) {
             return new Gson().fromJson("{\"error\":{\"message\":\"" + e + "\"}}", JsonObject.class);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return new Gson().fromJson("{\"error\":{\"message\":\"" + e + "\"}}", JsonObject.class);
         }
-        return new Gson().fromJson("{\"error\":{\"message\":\"Unknown error\"}}", JsonObject.class);
     }
 }

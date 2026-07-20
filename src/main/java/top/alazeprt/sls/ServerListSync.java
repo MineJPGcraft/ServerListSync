@@ -40,11 +40,12 @@ public class ServerListSync implements ModInitializer {
 		if (result.get("error") == null) {
 			try {
 				for (JsonElement element : result.getAsJsonArray("servers")) {
-					if (!element.getAsJsonObject().has("ip") || !element.getAsJsonObject().has("name")) {
+					JsonObject obj = element.getAsJsonObject();
+					if (obj.has("ip") && obj.has("name") && !obj.get("ip").isJsonNull() && !obj.get("name").isJsonNull()) {
 						serverInfosJson.add(element);
 						continue;
 					}
-					LOGGER.error("Error occurred while parsing server information: {} ; ip or name is empty", new Gson().toJson(element));
+					LOGGER.warn("Error occurred while parsing server information: {} ; ip or name is empty", new Gson().toJson(element));
 				}
 			} catch (Exception e) {
 				LOGGER.error("Error occurred while parsing server information: {} ; Exception: {}", new Gson().toJson(result), e);
